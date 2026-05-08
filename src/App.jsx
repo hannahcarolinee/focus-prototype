@@ -459,7 +459,7 @@ export default function App() {
       </motion.div>
 
       {/* SPACEBAR HINT */}
-      <div className="fixed bottom-10 left-0 right-0 flex flex-col items-center z-[100] pointer-events-none">
+      <div className="mt-8 left-0 right-0 flex flex-col items-center z-[100] pointer-events-none">
         <motion.div
           animate={{ opacity: isFocus ? 0.3 : 1 }}
           className="text-[10px] uppercase tracking-[0.25em] text-white/20 font-bold "
