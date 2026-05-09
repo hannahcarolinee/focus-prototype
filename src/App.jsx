@@ -267,7 +267,7 @@ export default function App() {
               appColor: "#4a154b",
               appLetter: "S",
               subtitle: "#design-system · Arjun",
-              body: "New token naming PR is up — would love a review before EOD",
+              body: "New token naming PR is up would love a review before EOD",
               time: "2m ago",
             },
             {
