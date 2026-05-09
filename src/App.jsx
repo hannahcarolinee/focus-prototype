@@ -149,7 +149,7 @@ export default function App() {
               +
             </div>
           </div>
-          <div className="h-[38px] bg-[#f1f3f4] border-b border-gray-200 flex items-center px-4 gap-3">
+          <div className="h-[38px] bg-[#f1f3f4] border-b border-gray-200 flex items-center px-2 gap-3">
             <div className="flex gap-4 text-gray-400">
               <div className="flex gap-1 items-center opacity-40">
                 <ChevronLeft size={14} />
@@ -177,7 +177,7 @@ export default function App() {
                     4
                   </span>
                 </div>
-                <div className="flex items-center gap-2.5 px-2 py-1.5 text-[11px] text-gray-900 font-medium bg-gray-200 rounded-md">
+                <div className="flex items-center gap-2.5 px-3.5 py-1.5 text-[11px] text-gray-900 font-medium bg-gray-200 rounded-md">
                   👤 My Issues{" "}
                   <span className="ml-auto text-[9px] text-gray-400 font-medium">
                     3
@@ -248,32 +248,110 @@ export default function App() {
           </div>
         </motion.div>
 
-        {/* NOTIFICATIONS (Bidirectional stagger) */}
-        <div className="absolute right-3 top-8 space-y-2 z-[60]">
-          {["MAIL", "SLACK", "CALENDAR"].map((app, i) => (
+        {/* NOTIFICATIONS */}
+        <div
+          className="absolute z-[60] flex flex-col gap-[6px]"
+          style={{ top: "32px", right: "12px" }}
+        >
+          {[
+            {
+              app: "Mail",
+              appColor: "#1a73e8",
+              appLetter: "M",
+              subtitle: "Re: Q2 design review",
+              body: "Priya: Can we push this to Thursday? I think the deck needs another pass.",
+              time: "now",
+            },
+            {
+              app: "Slack",
+              appColor: "#4a154b",
+              appLetter: "S",
+              subtitle: "#design-system · Arjun",
+              body: "New token naming PR is up — would love a review before EOD",
+              time: "2m ago",
+            },
+            {
+              app: "Calendar",
+              appColor: "#ff3b30",
+              appLetter: "C",
+              subtitle: "Standup in 10 minutes",
+              body: "Design team · Google Meet · 10:00 AM",
+              time: "8m ago",
+            },
+          ].map((n, i) => (
             <motion.div
-              key={app}
+              key={n.app}
               animate={{ x: isFocus ? 260 : 0, opacity: isFocus ? 0 : 1 }}
-              transition={{ ...notificationSpring, delay: i * 0.1 }}
-              className="w-[215px] p-3.5 bg-[#282828]/95 backdrop-blur-3xl border border-white/10 rounded-[12px] shadow-2xl text-white"
+              transition={{ ...notificationSpring, delay: i * 0.09 }}
+              style={{
+                width: "210px",
+                background: "rgba(30,30,30,0.78)",
+                backdropFilter: "blur(40px) saturate(180%)",
+                WebkitBackdropFilter: "blur(40px) saturate(180%)",
+                borderRadius: "12px",
+                border: "0.5px solid rgba(255,255,255,0.12)",
+                boxShadow: "0 6px 24px rgba(0,0,0,0.4)",
+                overflow: "hidden",
+              }}
             >
-              <div className="flex items-center gap-2 mb-1.5">
+              {/* Header row */}
+              <div className="flex items-center gap-1.5 px-2.5 pt-[8px] pb-[5px]">
                 <div
-                  className={`w-3 h-3 rounded-[2px] ${i === 0 ? "bg-blue-600" : i === 1 ? "bg-purple-900" : "bg-red-500"}`}
-                />
-                <span className="text-[9px] font-medium uppercase tracking-widest text-white/40">
-                  {app}
+                  className="w-[14px] h-[14px] rounded-[3px] flex items-center justify-center text-white flex-shrink-0"
+                  style={{
+                    background: n.appColor,
+                    fontSize: "7px",
+                    fontWeight: 700,
+                  }}
+                >
+                  {n.appLetter}
+                </div>
+                <span
+                  className="text-[9px] font-semibold flex-1 uppercase"
+                  style={{
+                    color: "rgba(255,255,255,0.4)",
+                    letterSpacing: "0.07em",
+                  }}
+                >
+                  {n.app}
                 </span>
-                <span className="ml-auto text-[9px] font-medium text-white/20">
-                  now
+                <span
+                  className="text-[9px]"
+                  style={{ color: "rgba(255,255,255,0.22)" }}
+                >
+                  {n.time}
                 </span>
               </div>
-              <div className="text-[12px] font-semibold text-white/95 mb-0.5 truncate ">
-                {i === 0
-                  ? "Re: Q2 design review"
-                  : i === 1
-                    ? "#design-system - Arjun"
-                    : "Standup in 10 minutes"}
+
+              {/* Hairline divider */}
+              <div
+                style={{
+                  height: "0.5px",
+                  background: "rgba(255,255,255,0.07)",
+                  margin: "0 10px",
+                }}
+              />
+
+              {/* Body */}
+              <div className="px-2.5 py-[8px]">
+                <div
+                  className="text-[11px] font-semibold mb-[2px] leading-snug"
+                  style={{ color: "rgba(255,255,255,0.92)" }}
+                >
+                  {n.subtitle}
+                </div>
+                <div
+                  className="text-[10px] leading-[1.4]"
+                  style={{
+                    color: "rgba(255,255,255,0.45)",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {n.body}
+                </div>
               </div>
             </motion.div>
           ))}
@@ -359,94 +437,139 @@ export default function App() {
         </motion.div>
 
         {/* FOCUS OVERLAY */}
+        {/* FOCUS OVERLAY */}
         <AnimatePresence>
           {isFocus && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
               className="absolute inset-0 flex flex-col items-center justify-center z-[70] pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.75) 100%)",
+              }}
             >
-              <div className="pointer-events-auto flex flex-col items-center">
-                <div className="relative w-[140px] h-[140px] flex items-center justify-center mb-3">
+              <div className="pointer-events-auto flex flex-col items-center gap-0">
+                {/* LABEL */}
+                <div
+                  className="text-[9px] uppercase mb-5 tracking-[0.3em]"
+                  style={{ color: "rgba(255,255,255,0.2)", fontWeight: 500 }}
+                >
+                  Focus
+                </div>
+
+                {/* RING + TIMER */}
+                <div className="relative w-[160px] h-[160px] flex items-center justify-center">
                   <svg className="absolute inset-0 -rotate-90 w-full h-full">
+                    {/* Track */}
                     <circle
-                      cx="70"
-                      cy="70"
-                      r="62"
+                      cx="80"
+                      cy="80"
+                      r="72"
                       fill="none"
-                      stroke="rgba(255,255,255,0.08)"
-                      strokeWidth="1.5"
+                      stroke="rgba(255,255,255,0.05)"
+                      strokeWidth="1"
                     />
+                    {/* Progress */}
                     <motion.circle
-                      cx="70"
-                      cy="70"
-                      r="62"
+                      cx="80"
+                      cy="80"
+                      r="72"
                       fill="none"
                       stroke={
                         isActive
-                          ? "rgba(255,255,255,0.5)"
-                          : "rgba(255,255,255,0.2)"
+                          ? "rgba(255,255,255,0.35)"
+                          : "rgba(255,255,255,0.12)"
                       }
-                      strokeWidth="1.5"
+                      strokeWidth="1"
                       strokeLinecap="round"
                       initial={{ pathLength: 1 }}
                       animate={{ pathLength: seconds / (25 * 60) }}
                       transition={{ duration: 1, ease: "linear" }}
                     />
                   </svg>
-                  <div className="text-center">
-                    <div className="text-[10px] tracking-[0.18em] uppercase text-white/25 font-bold mb-1">
-                      Focus
-                    </div>
-                    <div className="text-[30px] font-extralight text-white/90 tabular-nums leading-none tracking-tight">
-                      {formatTime(seconds)}
-                    </div>
+
+                  {/* Timer number */}
+                  <div
+                    className="tabular-nums leading-none tracking-tight"
+                    style={{
+                      fontSize: "42px",
+                      fontWeight: 200,
+                      color: "rgba(255,255,255,0.88)",
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    {formatTime(seconds)}
                   </div>
                 </div>
-                <div className="text-[12px] text-white/30 font-medium mb-10 tracking-wide italic">
+
+                {/* TASK */}
+                <div
+                  className="text-[11px] mt-4 mb-10 tracking-wide"
+                  style={{ color: "rgba(255,255,255,0.2)", fontWeight: 400 }}
+                >
                   Deep work session
                 </div>
-                <div className="flex gap-4">
+
+                {/* KEY CAPS — smaller, more minimal */}
+                <div className="flex gap-3">
                   {[
                     {
-                      icon: <RotateCcw size={16} />,
-                      label: "RESTART",
+                      icon: <RotateCcw size={13} />,
+                      label: "Restart",
                       action: () => {
                         setSeconds(25 * 60);
                         setIsActive(true);
                       },
                     },
                     {
-                      icon: isActive ? <Pause size={16} /> : <Play size={16} />,
-                      label: isActive ? "PAUSE" : "PLAY",
+                      icon: isActive ? <Pause size={13} /> : <Play size={13} />,
+                      label: isActive ? "Pause" : "Play",
                       action: () => setIsActive(!isActive),
                     },
                     {
-                      icon: <X size={16} />,
-                      label: "END",
+                      icon: <X size={13} />,
+                      label: "End",
                       action: toggleFocus,
                     },
                   ].map((k, i) => (
                     <div key={i} className="flex flex-col items-center gap-2">
                       <motion.button
                         whileHover={{
-                          backgroundColor: "rgba(255,255,255,0.08)",
-                          borderColor: "rgba(255,255,255,0.2)",
+                          backgroundColor: "rgba(255,255,255,0.07)",
+                          borderColor: "rgba(255,255,255,0.18)",
                         }}
                         whileTap={{
-                          scale: 0.9,
-                          y: 1.5,
-                          backgroundColor: "rgba(255,255,255,0.15)",
+                          scale: 0.91,
+                          y: 1,
+                          backgroundColor: "rgba(255,255,255,0.12)",
                         }}
                         transition={keySpring}
                         onClick={k.action}
-                        className="w-11 h-11 bg-white/5 border border-white/10 rounded-[10px] flex items-center justify-center text-white/40"
+                        style={{
+                          width: "36px",
+                          height: "36px",
+                          background: "rgba(255,255,255,0.04)",
+                          border: "0.5px solid rgba(255,255,255,0.1)",
+                          borderRadius: "8px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "rgba(255,255,255,0.35)",
+                        }}
                       >
                         {k.icon}
                       </motion.button>
-                      <span className="text-[9px] tracking-[0.15em] font-bold text-white/15 uppercase">
+                      <span
+                        className="uppercase tracking-[0.12em]"
+                        style={{
+                          fontSize: "8px",
+                          color: "rgba(255,255,255,0.15)",
+                          fontWeight: 500,
+                        }}
+                      >
                         {k.label}
                       </span>
                     </div>
