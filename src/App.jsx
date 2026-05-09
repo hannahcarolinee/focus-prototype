@@ -65,6 +65,43 @@ export default function App() {
     return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
+  // At the top of your component, before the return
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Then as the first thing in your return
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-8 text-center gap-6">
+        <div
+          className="text-[28px] font-extralight leading-tight"
+          style={{ color: "rgba(255,255,255,0.85)", letterSpacing: "-0.02em" }}
+        >
+          Best viewed on desktop
+        </div>
+        <div
+          className="text-[13px] leading-relaxed max-w-[260px]"
+          style={{ color: "rgba(255,255,255,0.3)", fontWeight: 400 }}
+        >
+          This prototype simulates a macOS interaction. Open it on a laptop or
+          desktop to see it properly.
+        </div>
+        <div
+          className="text-[10px] uppercase tracking-[0.2em] mt-4"
+          style={{ color: "rgba(255,255,255,0.15)" }}
+        >
+          A focus mode concept for macOS
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6 font-sans select-none overflow-hidden text-slate-900">
       {/* THE MAC SCREEN CONTAINER */}
